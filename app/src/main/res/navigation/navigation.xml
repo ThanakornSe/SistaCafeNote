@@ -7,8 +7,17 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.sistacafenote.HomeFragment"
+        android:name="com.example.sistacafenote.ui.HomeFragment"
         android:label="HomeFragment"
-        tools:layout="@layout/fragment_home"/>
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_newNoteFragment"
+            app:destination="@id/newNoteFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newNoteFragment"
+        android:name="com.example.sistacafenote.ui.NewNoteFragment"
+        android:label="New Note"
+        tools:layout="@layout/fragment_new_note" />
 
 </navigation>

@@ -9,4 +9,6 @@
     <string name="note_list_item_txt_subject">เมนู อาหารเย็นวันนี้</string>
     <string name="note_list_item_txt_description">รายการซื้อของ เมนูอาหารเย็นนี้ .......</string>
     <string name="note_list_item_txt_tag">Other</string>
+    <string name="edt_newnote_title_text">Title</string>
+    <string name="edittext_content_hinttext">Type here....</string>
 </resources>
