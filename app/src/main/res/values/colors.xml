@@ -14,5 +14,7 @@
     <color name="redImportantTag">#FF6262</color>
     <color name="blueWorkTag">#63EDD8</color>
     <color name="brownOtherTag">#F8AC6B</color>
+    <color name="textGrey">#707070</color>
+    <color name="lightGrey">#D5D5D5</color>
 
 </resources>

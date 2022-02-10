@@ -6,4 +6,7 @@
     <string name="txt_chip_work">Work</string>
     <string name="txt_chip_important">Important</string>
     <string name="txt_chip_other">Other</string>
+    <string name="note_list_item_txt_subject">เมนู อาหารเย็นวันนี้</string>
+    <string name="note_list_item_txt_description">รายการซื้อของ เมนูอาหารเย็นนี้ .......</string>
+    <string name="note_list_item_txt_tag">Other</string>
 </resources>
