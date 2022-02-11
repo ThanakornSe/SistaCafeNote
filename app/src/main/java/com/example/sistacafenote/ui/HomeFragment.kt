@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import com.example.sistacafenote.R
 import com.example.sistacafenote.databinding.FragmentHomeBinding
 
@@ -36,6 +37,10 @@ class HomeFragment : Fragment() {
             it.isSelected = it.isSelected == false
             binding.chipWork.isSelected = false
             binding.chipImportant.isSelected = false
+        }
+
+        binding.fabNewNote.setOnClickListener {
+            this.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToNewNoteFragment())
         }
 
         return binding.root
