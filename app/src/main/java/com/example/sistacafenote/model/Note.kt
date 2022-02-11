@@ -15,5 +15,5 @@ data class Note(
     val imageUri:String = ""
 ):Parcelable {
     @PrimaryKey(autoGenerate = true)
-    val id:Long = 0L
+    var id:Long = 0L
 }

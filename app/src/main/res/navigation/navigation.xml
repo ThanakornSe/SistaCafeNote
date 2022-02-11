@@ -18,6 +18,12 @@
         android:id="@+id/newNoteFragment"
         android:name="com.example.sistacafenote.ui.NewNoteFragment"
         android:label="New Note"
-        tools:layout="@layout/fragment_new_note" />
+        tools:layout="@layout/fragment_new_note" >
+        <action
+            android:id="@+id/action_newNoteFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>

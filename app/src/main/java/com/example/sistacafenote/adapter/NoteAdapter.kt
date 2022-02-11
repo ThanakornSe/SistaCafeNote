@@ -27,6 +27,7 @@ class NoteAdapter: ListAdapter<Note,NoteAdapter.ViewHolder>(DiffCallBack) {
 
 
     class ViewHolder(private val binding:NoteListItemBinding):RecyclerView.ViewHolder(binding.root){
+
         fun binding(note:Note){
 
             binding.txtTitle.text = note.title
