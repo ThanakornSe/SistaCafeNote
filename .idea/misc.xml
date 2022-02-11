@@ -7,11 +7,13 @@
         <entry key="..\:/Android Project/AndroidStudioProjects/4.Udemy-Denis/SistaCafeNote/app/src/main/res/drawable/color_other_tag.xml" value="0.2965" />
         <entry key="..\:/Android Project/AndroidStudioProjects/4.Udemy-Denis/SistaCafeNote/app/src/main/res/drawable/color_tag.xml" value="0.3335" />
         <entry key="..\:/Android Project/AndroidStudioProjects/4.Udemy-Denis/SistaCafeNote/app/src/main/res/drawable/color_work_tag.xml" value="0.2595" />
+        <entry key="..\:/Android Project/AndroidStudioProjects/4.Udemy-Denis/SistaCafeNote/app/src/main/res/drawable/ic_image.xml" value="0.1" />
         <entry key="..\:/Android Project/AndroidStudioProjects/4.Udemy-Denis/SistaCafeNote/app/src/main/res/font/roboto.xml" value="0.1" />
         <entry key="..\:/Android Project/AndroidStudioProjects/4.Udemy-Denis/SistaCafeNote/app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="..\:/Android Project/AndroidStudioProjects/4.Udemy-Denis/SistaCafeNote/app/src/main/res/layout/fragment_home.xml" value="0.33" />
-        <entry key="..\:/Android Project/AndroidStudioProjects/4.Udemy-Denis/SistaCafeNote/app/src/main/res/layout/fragment_new_note.xml" value="0.22" />
+        <entry key="..\:/Android Project/AndroidStudioProjects/4.Udemy-Denis/SistaCafeNote/app/src/main/res/layout/fragment_new_note.xml" value="0.25" />
         <entry key="..\:/Android Project/AndroidStudioProjects/4.Udemy-Denis/SistaCafeNote/app/src/main/res/layout/note_list_item.xml" value="0.29743589743589743" />
+        <entry key="..\:/Android Project/AndroidStudioProjects/4.Udemy-Denis/SistaCafeNote/app/src/main/res/menu/new_note_menu.xml" value="0.24074074074074073" />
       </map>
     </option>
   </component>

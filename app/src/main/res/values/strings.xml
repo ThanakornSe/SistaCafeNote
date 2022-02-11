@@ -11,4 +11,7 @@
     <string name="note_list_item_txt_tag">Other</string>
     <string name="edt_newnote_title_text">Title</string>
     <string name="edittext_content_hinttext">Type here....</string>
+    <string name="option_item_text_save">SAVE</string>
+    <string name="option_item_text_upload_image">Upload Image</string>
+    <string name="delete_image_content_description">Delete Image</string>
 </resources>

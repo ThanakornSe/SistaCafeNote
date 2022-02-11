@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/saveNote"
+        android:title="@string/option_item_text_save"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/uploadImage"
+        android:icon="@drawable/ic_image"
+        app:iconTint="@color/black"
+        android:title="@string/option_item_text_upload_image"
+        />
+
+
+</menu>

@@ -19,8 +19,10 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/cv_tag"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
             tools:listitem="@layout/note_list_item" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -39,7 +41,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_tag"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="70dp"
             app:cardElevation="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -49,8 +51,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
+                android:paddingStart="15dp"
                 android:orientation="horizontal"
-                android:paddingStart="10dp"
                 tools:ignore="RtlSymmetry">
 
                 <com.google.android.material.chip.Chip
