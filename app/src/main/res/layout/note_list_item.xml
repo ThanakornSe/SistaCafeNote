@@ -38,16 +38,16 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/txt_subject"
+                android:id="@+id/txt_title"
                 style="@style/item_row_txt_subject"
                 android:singleLine="true"
                 android:text="@string/note_list_item_txt_subject" />
 
             <TextView
-                android:id="@+id/txt_description"
+                android:id="@+id/txt_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txt_subject"
+                android:layout_below="@id/txt_title"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/roboto"
                 android:singleLine="true"
@@ -59,7 +59,7 @@
                 android:id="@+id/imv_tag_color"
                 android:layout_width="13dp"
                 android:layout_height="13dp"
-                android:layout_below="@id/txt_description"
+                android:layout_below="@id/txt_content"
                 android:layout_marginTop="9dp"
                 android:src="@color/brownOtherTag"
                 app:shapeAppearanceOverlay="@style/circleStyle" />
@@ -68,7 +68,7 @@
                 android:id="@+id/txt_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txt_description"
+                android:layout_below="@id/txt_content"
                 android:layout_marginStart="3dp"
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@id/imv_tag_color"
