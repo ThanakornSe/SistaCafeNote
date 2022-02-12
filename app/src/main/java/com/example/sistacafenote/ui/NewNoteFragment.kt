@@ -2,6 +2,8 @@ package com.example.sistacafenote.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -47,12 +49,10 @@ class NewNoteFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK && result.data != null) {
                 imageUri = result.data?.data.toString()
-                if (imageUri != null) {
+                if (imageUri != null && imageUri?.isNotEmpty() == true) {
                     binding.flImage.visibility = View.VISIBLE
                     Glide.with(requireContext()).load(result.data?.data)
                         .into(binding.imvPhoto)
-                } else {
-                    binding.flImage.visibility = View.GONE
                 }
             }
         }
@@ -112,6 +112,7 @@ class NewNoteFragment : Fragment() {
 
         binding.btnDeleteImage.setOnClickListener {
             imageUri = null
+            binding.flImage.visibility = View.GONE
         }
 
         return binding.root
@@ -135,9 +136,16 @@ class NewNoteFragment : Fragment() {
                 val tag = tagEdit ?: Tag.OTHER
                 if (title.isNotEmpty() && content.isNotEmpty()) {
                     viewModel.insertNote(Note(title, content, tag, imageUri = image))
+                    this.findNavController()
+                        .navigate(NewNoteFragmentDirections.actionNewNoteFragmentToHomeFragment())
+                }else {
+                    AlertDialog.Builder(context)
+                        .setTitle("Error")
+                        .setMessage("Please fill the information.")
+                        .setCancelable(false)
+                        .setPositiveButton("Dismiss") { dialogInterface, _ -> dialogInterface.dismiss() }
+                        .show()
                 }
-                this.findNavController()
-                    .navigate(NewNoteFragmentDirections.actionNewNoteFragmentToHomeFragment())
             }
 
             R.id.uploadImage -> {
