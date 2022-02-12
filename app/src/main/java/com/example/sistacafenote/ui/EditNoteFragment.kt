@@ -48,6 +48,11 @@ class EditNoteFragment : Fragment() {
         binding.apply {
             edtTitle.setText(note.title)
             edtContent.setText(note.content)
+            when (note.tag){
+                Tag.OTHER -> viewModel.setTagOther(true)
+                Tag.IMPORTANT -> viewModel.setTagImportant(true)
+                Tag.WORK -> viewModel.setTagWork(true)
+            }
             if (note.imageUri.isNotEmpty() && imageUri == null) {
                 binding.flImage.visibility = View.VISIBLE
                 val uri: Uri = Uri.parse(note.imageUri)
@@ -79,23 +84,47 @@ class EditNoteFragment : Fragment() {
 
         binding.chipWork.setOnClickListener {
             it.isSelected = it.isSelected == false
-            binding.chipImportant.isSelected = false
-            binding.chipOther.isSelected = false
-            tagEdit = Tag.WORK
+            if (it.isSelected){
+                viewModel.setTagWork(true)
+            }else viewModel.setTagWork(false)
+        }
+        viewModel.tagWork.observe(viewLifecycleOwner){
+            if (it){
+                binding.chipOther.isSelected = false
+                binding.chipWork.isSelected = true
+                binding.chipImportant.isSelected = false
+                tagEdit = Tag.WORK
+            }else tagEdit = null
         }
 
         binding.chipImportant.setOnClickListener {
             it.isSelected = it.isSelected == false
-            binding.chipWork.isSelected = false
-            binding.chipOther.isSelected = false
-            tagEdit = Tag.IMPORTANT
+            if (it.isSelected){
+                viewModel.setTagImportant(true)
+            }else viewModel.setTagImportant(false)
+        }
+        viewModel.tagImportant.observe(viewLifecycleOwner){
+            if (it){
+                binding.chipOther.isSelected = false
+                binding.chipWork.isSelected = false
+                binding.chipImportant.isSelected = true
+                tagEdit = Tag.IMPORTANT
+            }else tagEdit = null
         }
 
         binding.chipOther.setOnClickListener {
             it.isSelected = it.isSelected == false
-            binding.chipWork.isSelected = false
-            binding.chipImportant.isSelected = false
-            tagEdit = Tag.OTHER
+            if (it.isSelected){
+                viewModel.setTagOther(true)
+            }else viewModel.setTagOther(false)
+        }
+        viewModel.tagOther.observe(viewLifecycleOwner){
+            if (it){
+                binding.chipOther.isSelected = true
+                binding.chipWork.isSelected = false
+                binding.chipImportant.isSelected = false
+                tagEdit = Tag.OTHER
+            }else tagEdit = null
         }
 
         binding.btnDeleteImage.setOnClickListener {
@@ -105,7 +134,6 @@ class EditNoteFragment : Fragment() {
             viewModel.updateNote(note)
             binding.flImage.visibility = View.GONE
         }
-
 
         setHasOptionsMenu(true)
         return binding.root

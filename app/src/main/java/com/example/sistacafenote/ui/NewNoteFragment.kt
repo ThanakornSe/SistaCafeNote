@@ -23,6 +23,7 @@ import com.example.sistacafenote.R
 import com.example.sistacafenote.databinding.FragmentHomeBinding
 import com.example.sistacafenote.databinding.FragmentNewNoteBinding
 import com.example.sistacafenote.model.Note
+import com.example.sistacafenote.util.Tag
 import kotlinx.android.synthetic.main.fragment_new_note.*
 
 
@@ -39,17 +40,18 @@ class NewNoteFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
+    private var tagEdit: Tag? = null
     private var imageUri: String? = null
 
     private val selectedImage =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK && result.data != null) {
                 imageUri = result.data?.data.toString()
-                if(imageUri != null){
+                if (imageUri != null) {
                     binding.flImage.visibility = View.VISIBLE
                     Glide.with(requireContext()).load(result.data?.data)
                         .into(binding.imvPhoto)
-                }else {
+                } else {
                     binding.flImage.visibility = View.GONE
                 }
             }
@@ -64,21 +66,49 @@ class NewNoteFragment : Fragment() {
 
         binding.chipWork.setOnClickListener {
             it.isSelected = it.isSelected == false
-            binding.chipImportant.isSelected = false
-            binding.chipOther.isSelected = false
+            if (it.isSelected) {
+                viewModel.setTagWork(true)
+            } else viewModel.setTagWork(false)
+        }
+        viewModel.tagWork.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.chipOther.isSelected = false
+                binding.chipWork.isSelected = true
+                binding.chipImportant.isSelected = false
+                tagEdit = Tag.WORK
+            } else tagEdit = null
         }
 
         binding.chipImportant.setOnClickListener {
             it.isSelected = it.isSelected == false
-            binding.chipWork.isSelected = false
-            binding.chipOther.isSelected = false
+            if (it.isSelected) {
+                viewModel.setTagImportant(true)
+            } else viewModel.setTagImportant(false)
+        }
+        viewModel.tagImportant.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.chipOther.isSelected = false
+                binding.chipWork.isSelected = false
+                binding.chipImportant.isSelected = true
+                tagEdit = Tag.IMPORTANT
+            } else tagEdit = null
         }
 
         binding.chipOther.setOnClickListener {
             it.isSelected = it.isSelected == false
-            binding.chipWork.isSelected = false
-            binding.chipImportant.isSelected = false
+            if (it.isSelected) {
+                viewModel.setTagOther(true)
+            } else viewModel.setTagOther(false)
         }
+        viewModel.tagOther.observe(viewLifecycleOwner) {
+            if (it) {
+                binding.chipOther.isSelected = true
+                binding.chipWork.isSelected = false
+                binding.chipImportant.isSelected = false
+                tagEdit = Tag.OTHER
+            } else tagEdit = null
+        }
+
 
         binding.btnDeleteImage.setOnClickListener {
             imageUri = null
@@ -102,8 +132,9 @@ class NewNoteFragment : Fragment() {
                 val title = binding.edtTitle.text.toString()
                 val content = binding.edtContent.text.toString()
                 val image = imageUri ?: ""
+                val tag = tagEdit ?: Tag.OTHER
                 if (title.isNotEmpty() && content.isNotEmpty()) {
-                    viewModel.insertNote(Note(title, content, imageUri = image))
+                    viewModel.insertNote(Note(title, content, tag, imageUri = image))
                 }
                 this.findNavController()
                     .navigate(NewNoteFragmentDirections.actionNewNoteFragmentToHomeFragment())

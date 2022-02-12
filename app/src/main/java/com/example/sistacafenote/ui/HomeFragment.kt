@@ -77,7 +77,6 @@ class HomeFragment : Fragment(),OnClickListener {
             if (it.isSelected){
                 viewModel.setTagOther(true)
             }else viewModel.setTagOther(false)
-
         }
         viewModel.tagOther.observe(viewLifecycleOwner){
             if (it){
