@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,9 +30,12 @@ class HomeFragment : Fragment(),OnClickListener {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var adapter: NoteAdapter
 
-    private val viewModel: NoteViewModel by activityViewModels {
-        NoteViewModelFactory(NoteApplication.instance.repository)
-    }
+//    private val viewModel: NoteViewModel by viewModels {
+//        NoteViewModelFactory(NoteApplication.instance.repository)
+//    }
+
+    private lateinit var viewModel: NoteViewModel
+    private lateinit var viewModelFactory: NoteViewModelFactory
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,38 +44,41 @@ class HomeFragment : Fragment(),OnClickListener {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
 
+
+        viewModelFactory = NoteViewModelFactory(NoteApplication.instance.repository)
+        viewModel = ViewModelProvider(this,viewModelFactory)[NoteViewModel::class.java]
+
         binding.chipWork.setOnClickListener {
             it.isSelected = it.isSelected == false
             binding.chipImportant.isSelected = false
             binding.chipOther.isSelected = false
+            getListByTag(Tag.WORK)
         }
 
         binding.chipImportant.setOnClickListener {
             it.isSelected = it.isSelected == false
             binding.chipWork.isSelected = false
             binding.chipOther.isSelected = false
+            getListByTag(Tag.IMPORTANT)
         }
 
         binding.chipOther.setOnClickListener {
             it.isSelected = it.isSelected == false
             binding.chipWork.isSelected = false
             binding.chipImportant.isSelected = false
+            getListByTag(Tag.OTHER)
         }
 
         adapter = NoteAdapter(this)
 
-        viewModel.allNote.observe(viewLifecycleOwner) {
-            it?.let {
-                adapter.submitList(it)
-            }
-        }
+
+        getListByTag(Tag.OTHER)
 
         binding.rvNoteList.adapter = adapter
 
         binding.fabNewNote.setOnClickListener {
             this.findNavController()
                 .navigate(HomeFragmentDirections.actionHomeFragmentToNewNoteFragment())
-            viewModel.setEdit(false)
         }
 
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
@@ -105,6 +112,12 @@ class HomeFragment : Fragment(),OnClickListener {
         }
 
         return binding.root
+    }
+
+    private fun getListByTag(tag: Tag) {
+        viewModel.getNoteByTag(tag).observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
     }
 
     override fun onNoteClick(note: Note) {

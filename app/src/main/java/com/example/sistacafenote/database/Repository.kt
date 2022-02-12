@@ -8,9 +8,11 @@ import kotlinx.coroutines.flow.Flow
 class Repository(private val noteDao: NoteDao) {
 
     val allNote = noteDao.getAllNote()
-    val noteOtherTag = noteDao.getNoteByTAG(Tag.OTHER)
-    val noteImportantTag = noteDao.getNoteByTAG(Tag.IMPORTANT)
-    val noteWorkTag = noteDao.getNoteByTAG(Tag.WORK)
+//    val noteOtherTag = noteDao.getNoteByTAG(Tag.OTHER)
+//    val noteImportantTag = noteDao.getNoteByTAG(Tag.IMPORTANT)
+//    val noteWorkTag = noteDao.getNoteByTAG(Tag.WORK)
+
+    fun getNoteByTag(tag: Tag):Flow<List<Note>> = noteDao.getNoteByTAG(tag)
 
 
     suspend fun insertNote(note:Note){

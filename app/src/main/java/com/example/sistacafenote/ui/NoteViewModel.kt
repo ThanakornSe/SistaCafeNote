@@ -10,9 +10,8 @@ import kotlinx.coroutines.launch
 class NoteViewModel(private val repository: Repository) : ViewModel() {
 
     val allNote: LiveData<List<Note>> = repository.allNote.asLiveData()
-    val noteOtherTag: LiveData<List<Note>> = repository.noteOtherTag.asLiveData()
-    val noteImportantTag = repository.noteImportantTag.asLiveData()
-    val noteWorkTag = repository.noteWorkTag.asLiveData()
+
+    fun getNoteByTag(tag: Tag):LiveData<List<Note>> = repository.getNoteByTag(tag).asLiveData()
 
     fun insertNote(note: Note) = viewModelScope.launch { repository.insertNote(note) }
     fun updateNote(note: Note) = viewModelScope.launch { repository.updateNote(note) }
