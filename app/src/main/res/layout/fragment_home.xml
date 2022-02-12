@@ -37,7 +37,7 @@
             app:layout_constraintBottom_toTopOf="@+id/cv_tag"
             app:layout_constraintEnd_toEndOf="parent"
             app:tint="@color/white"
-            tools:ignore="SpeakableTextPresentCheck" />
+            tools:ignore="SpeakableTextPresentCheck,RedundantDescriptionCheck,ImageContrastCheck" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_tag"
@@ -83,7 +83,7 @@
                     app:chipIcon="@drawable/color_important_tag"
                     app:chipStrokeColor="@color/chip_stroke_color"
                     app:chipStrokeWidth="1dp"
-                    tools:ignore="TouchTargetSizeCheck"
+                    tools:ignore="TouchTargetSizeCheck,TextContrastCheck"
                     tools:layout_editor_absoluteX="155dp"
                     tools:layout_editor_absoluteY="232dp" />
 

@@ -14,10 +14,11 @@ import com.example.sistacafenote.databinding.NoteListItemBinding
 import com.example.sistacafenote.model.Note
 import com.example.sistacafenote.util.Tag
 
-class NoteAdapter(private val onClickListener: OnClickListener): ListAdapter<Note,NoteAdapter.ViewHolder>(DiffCallBack) {
+class NoteAdapter(private val onClickListener: OnClickListener) :
+    ListAdapter<Note, NoteAdapter.ViewHolder>(DiffCallBack) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = NoteListItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val view = NoteListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
     }
 
@@ -26,12 +27,13 @@ class NoteAdapter(private val onClickListener: OnClickListener): ListAdapter<Not
         holder.binding(note, onClickListener)
     }
 
-
-    class ViewHolder(private val binding:NoteListItemBinding):RecyclerView.ViewHolder(binding.root){
+    class ViewHolder(private val binding: NoteListItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun binding(
-            note:Note,
-        onClickListener: OnClickListener){
+            note: Note,
+            onClickListener: OnClickListener
+        ) {
 
             binding.noteLayout.setOnClickListener {
                 onClickListener.onNoteClick(note)
@@ -40,14 +42,14 @@ class NoteAdapter(private val onClickListener: OnClickListener): ListAdapter<Not
             binding.txtTitle.text = note.title
             binding.txtContent.text = note.content
 
-            if (note.imageUri.isNotEmpty()){
+            if (note.imageUri.isNotEmpty()) {
                 binding.imvThumbnail.visibility = View.VISIBLE
                 val uri: Uri = Uri.parse(note.imageUri)
                 Glide.with(itemView.context).load(uri)
                     .into(binding.imvThumbnail)
             }
 
-            when (note.tag){
+            when (note.tag) {
                 Tag.WORK -> {
                     Glide.with(itemView.context).load(R.drawable.color_work_tag)
                         .into(binding.imvTagColor)
@@ -64,12 +66,10 @@ class NoteAdapter(private val onClickListener: OnClickListener): ListAdapter<Not
                     binding.txtTag.text = "Other"
                 }
             }
-
-
         }
     }
 
-    companion object DiffCallBack: DiffUtil.ItemCallback<Note>(){
+    companion object DiffCallBack : DiffUtil.ItemCallback<Note>() {
         override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
             return oldItem.content == newItem.content
         }
@@ -77,10 +77,9 @@ class NoteAdapter(private val onClickListener: OnClickListener): ListAdapter<Not
         override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean {
             return oldItem == newItem
         }
-
     }
 }
 
 interface OnClickListener {
-    fun onNoteClick(note:Note)
+    fun onNoteClick(note: Note)
 }

@@ -13,12 +13,15 @@
         tools:context=".ui.NewNoteFragment">
 
         <EditText
+            android:inputType="textShortMessage"
             android:id="@+id/edt_title"
             style="@style/edittext_NewNote_Title"
             android:hint="@string/edt_newnote_title_text"
             app:layout_constraintEnd_toStartOf="@+id/guideline5"
             app:layout_constraintStart_toStartOf="@+id/guideline4"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TouchTargetSizeCheck"
+            android:importantForAutofill="no" />
 
         <View
             android:id="@+id/view"
@@ -70,7 +73,8 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline5"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/guideline4"
-            app:layout_constraintTop_toBottomOf="@+id/fl_image" />
+            app:layout_constraintTop_toBottomOf="@+id/fl_image"
+            android:importantForAutofill="no" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_tag"
@@ -97,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
-                    android:text="Tags" />
+                    android:text="@string/text_tags" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_work"
@@ -135,7 +139,7 @@
                     app:chipIcon="@drawable/color_important_tag"
                     app:chipStrokeColor="@color/chip_stroke_color"
                     app:chipStrokeWidth="1dp"
-                    tools:ignore="TouchTargetSizeCheck"
+                    tools:ignore="TouchTargetSizeCheck,TextContrastCheck"
                     tools:layout_editor_absoluteX="155dp"
                     tools:layout_editor_absoluteY="232dp" />
 
