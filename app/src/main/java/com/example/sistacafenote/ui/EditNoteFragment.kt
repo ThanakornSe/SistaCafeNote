@@ -12,57 +12,60 @@ import androidx.appcompat.view.menu.MenuBuilder
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.sistacafenote.NoteApplication
 import com.example.sistacafenote.R
 import com.example.sistacafenote.databinding.FragmentEditNoteBinding
 import com.example.sistacafenote.model.Note
+import com.example.sistacafenote.util.Tag
 
 
 class EditNoteFragment : Fragment() {
 
     private lateinit var binding: FragmentEditNoteBinding
 
-    private val viewModel: NoteViewModel by activityViewModels {
+    private val viewModel: NoteViewModel by viewModels {
         NoteViewModelFactory(NoteApplication.instance.repository)
     }
 
-    private lateinit var imageUri: String
-    private lateinit var note:Note
+    private var imageUri: String? = null
+    private lateinit var note: Note
+
+    private var tagEdit:Tag? = null
 
     private val selectedImage =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
-                val title = binding.edtTitle.toString()
-                val content = binding.edtContent.toString()
                 imageUri = result.data?.data.toString()
-                if (title.isNotEmpty() && content.isNotEmpty()) {
-                    viewModel.insertNote(Note(title, content, imageUri = imageUri))
-                }
-                Glide.with(requireContext()).load(result.data?.data)
-                    .into(binding.imvPhoto)
             }
         }
 
 
-
     override fun onResume() {
         super.onResume()
-
-        if (note != null){
-                binding.apply {
-                    edtTitle.setText(note.title)
-                    edtContent.setText(note.content)
-//                    note.imageUri?.let {
-//                        binding.flImage.visibility = View.VISIBLE
-//                        val uri: Uri = Uri.parse(note.imageUri)
-//                        Glide.with(requireContext()).load(uri)
-//                            .into(binding.imvPhoto)
-//                    }
+        binding.apply {
+            edtTitle.setText(note.title)
+            edtContent.setText(note.content)
+            if (note.imageUri.isNotEmpty() && imageUri == null) {
+                binding.flImage.visibility = View.VISIBLE
+                val uri: Uri = Uri.parse(note.imageUri)
+                Glide.with(requireContext()).load(uri)
+                    .into(binding.imvPhoto)
+            } else if (imageUri != null) {
+                imageUri?.let {
+                    binding.flImage.visibility = View.VISIBLE
+                    viewModel.setImageUri(it)
+                    viewModel.imageUri.observe(viewLifecycleOwner) { uri ->
+                        Glide.with(requireContext()).load(Uri.parse(uri))
+                            .into(binding.imvPhoto)
+                    }
                 }
+            } else {
+                binding.flImage.visibility = View.GONE
+            }
         }
-
     }
 
 
@@ -78,19 +81,31 @@ class EditNoteFragment : Fragment() {
             it.isSelected = it.isSelected == false
             binding.chipImportant.isSelected = false
             binding.chipOther.isSelected = false
+            tagEdit = Tag.WORK
         }
 
         binding.chipImportant.setOnClickListener {
             it.isSelected = it.isSelected == false
             binding.chipWork.isSelected = false
             binding.chipOther.isSelected = false
+            tagEdit = Tag.IMPORTANT
         }
 
         binding.chipOther.setOnClickListener {
             it.isSelected = it.isSelected == false
             binding.chipWork.isSelected = false
             binding.chipImportant.isSelected = false
+            tagEdit = Tag.OTHER
         }
+
+        binding.btnDeleteImage.setOnClickListener {
+            imageUri = null
+            note.imageUri = ""
+            viewModel.setImageUri("")
+            viewModel.updateNote(note)
+            binding.flImage.visibility = View.GONE
+        }
+
 
         setHasOptionsMenu(true)
         return binding.root
@@ -109,9 +124,12 @@ class EditNoteFragment : Fragment() {
             R.id.saveNote -> {
                 val title = binding.edtTitle.text.toString()
                 val content = binding.edtContent.text.toString()
+                val image = imageUri ?: note.imageUri
                 if (title.isNotEmpty() && content.isNotEmpty()) {
                     note.title = title
                     note.content = content
+                    note.imageUri = image
+                    note.tag = tagEdit ?: Tag.OTHER
                     viewModel.updateNote(note)
                 }
                 this.findNavController()
@@ -119,9 +137,9 @@ class EditNoteFragment : Fragment() {
             }
 
             R.id.uploadImage -> {
-//                Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).also {
-//                    selectedImage.launch(it)
-//                }
+                Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).also {
+                    selectedImage.launch(it)
+                }
             }
         }
 

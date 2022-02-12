@@ -30,12 +30,10 @@ class HomeFragment : Fragment(),OnClickListener {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var adapter: NoteAdapter
 
-//    private val viewModel: NoteViewModel by viewModels {
-//        NoteViewModelFactory(NoteApplication.instance.repository)
-//    }
+    private val viewModel: NoteViewModel by viewModels {
+        NoteViewModelFactory(NoteApplication.instance.repository)
+    }
 
-    private lateinit var viewModel: NoteViewModel
-    private lateinit var viewModelFactory: NoteViewModelFactory
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,35 +42,55 @@ class HomeFragment : Fragment(),OnClickListener {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
 
-
-        viewModelFactory = NoteViewModelFactory(NoteApplication.instance.repository)
-        viewModel = ViewModelProvider(this,viewModelFactory)[NoteViewModel::class.java]
-
         binding.chipWork.setOnClickListener {
             it.isSelected = it.isSelected == false
-            binding.chipImportant.isSelected = false
-            binding.chipOther.isSelected = false
-            getListByTag(Tag.WORK)
+            if (it.isSelected){
+                viewModel.setTagWork(true)
+            }else viewModel.setTagWork(false)
+        }
+        viewModel.tagWork.observe(viewLifecycleOwner){
+            if (it){
+                binding.chipOther.isSelected = false
+                binding.chipWork.isSelected = true
+                binding.chipImportant.isSelected = false
+                getListByTag(Tag.WORK)
+            }else getListByTag(null)
         }
 
         binding.chipImportant.setOnClickListener {
             it.isSelected = it.isSelected == false
-            binding.chipWork.isSelected = false
-            binding.chipOther.isSelected = false
-            getListByTag(Tag.IMPORTANT)
+            if (it.isSelected){
+                viewModel.setTagImportant(true)
+            }else viewModel.setTagImportant(false)
+        }
+        viewModel.tagImportant.observe(viewLifecycleOwner){
+            if (it){
+                binding.chipOther.isSelected = false
+                binding.chipWork.isSelected = false
+                binding.chipImportant.isSelected = true
+                getListByTag(Tag.IMPORTANT)
+            }else getListByTag(null)
         }
 
         binding.chipOther.setOnClickListener {
             it.isSelected = it.isSelected == false
-            binding.chipWork.isSelected = false
-            binding.chipImportant.isSelected = false
-            getListByTag(Tag.OTHER)
+            if (it.isSelected){
+                viewModel.setTagOther(true)
+            }else viewModel.setTagOther(false)
+
+        }
+        viewModel.tagOther.observe(viewLifecycleOwner){
+            if (it){
+                binding.chipOther.isSelected = true
+                binding.chipWork.isSelected = false
+                binding.chipImportant.isSelected = false
+                getListByTag(Tag.OTHER)
+            }else getListByTag(null)
         }
 
         adapter = NoteAdapter(this)
 
-
-        getListByTag(Tag.OTHER)
+        getListByTag(null)
 
         binding.rvNoteList.adapter = adapter
 
@@ -114,7 +132,7 @@ class HomeFragment : Fragment(),OnClickListener {
         return binding.root
     }
 
-    private fun getListByTag(tag: Tag) {
+    private fun getListByTag(tag: Tag?) {
         viewModel.getNoteByTag(tag).observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }

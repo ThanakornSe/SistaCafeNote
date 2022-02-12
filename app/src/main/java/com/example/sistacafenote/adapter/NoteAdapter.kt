@@ -51,14 +51,17 @@ class NoteAdapter(private val onClickListener: OnClickListener): ListAdapter<Not
                 Tag.WORK -> {
                     Glide.with(itemView.context).load(R.drawable.color_work_tag)
                         .into(binding.imvTagColor)
+                    binding.txtTag.text = "Work"
                 }
                 Tag.IMPORTANT -> {
                     Glide.with(itemView.context).load(R.drawable.color_important_tag)
                         .into(binding.imvTagColor)
+                    binding.txtTag.text = "Important"
                 }
                 Tag.OTHER -> {
                     Glide.with(itemView.context).load(R.drawable.color_other_tag)
                         .into(binding.imvTagColor)
+                    binding.txtTag.text = "Other"
                 }
             }
 

@@ -30,7 +30,7 @@ class NewNoteFragment : Fragment() {
 
     private lateinit var binding: FragmentNewNoteBinding
 
-    private val viewModel: NoteViewModel by activityViewModels {
+    private val viewModel: NoteViewModel by viewModels {
         NoteViewModelFactory(NoteApplication.instance.repository)
     }
 
@@ -39,16 +39,18 @@ class NewNoteFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    private lateinit var imageUri: String
+    private var imageUri: String? = null
 
     private val selectedImage =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK && result.data != null) {
                 imageUri = result.data?.data.toString()
-                imageUri?.let {
+                if(imageUri != null){
                     binding.flImage.visibility = View.VISIBLE
                     Glide.with(requireContext()).load(result.data?.data)
                         .into(binding.imvPhoto)
+                }else {
+                    binding.flImage.visibility = View.GONE
                 }
             }
         }
@@ -78,6 +80,9 @@ class NewNoteFragment : Fragment() {
             binding.chipImportant.isSelected = false
         }
 
+        binding.btnDeleteImage.setOnClickListener {
+            imageUri = null
+        }
 
         return binding.root
     }
@@ -96,17 +101,18 @@ class NewNoteFragment : Fragment() {
             R.id.saveNote -> {
                 val title = binding.edtTitle.text.toString()
                 val content = binding.edtContent.text.toString()
+                val image = imageUri ?: ""
                 if (title.isNotEmpty() && content.isNotEmpty()) {
-                    viewModel.insertNote(Note(title, content))
+                    viewModel.insertNote(Note(title, content, imageUri = image))
                 }
                 this.findNavController()
                     .navigate(NewNoteFragmentDirections.actionNewNoteFragmentToHomeFragment())
             }
 
             R.id.uploadImage -> {
-//                Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI).also {
-//                    selectedImage.launch(it)
-//                }
+                Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).also {
+                    selectedImage.launch(it)
+                }
             }
         }
 
