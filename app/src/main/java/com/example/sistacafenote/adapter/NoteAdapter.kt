@@ -3,6 +3,7 @@ package com.example.sistacafenote.adapter
 
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -13,7 +14,7 @@ import com.example.sistacafenote.databinding.NoteListItemBinding
 import com.example.sistacafenote.model.Note
 import com.example.sistacafenote.util.Tag
 
-class NoteAdapter: ListAdapter<Note,NoteAdapter.ViewHolder>(DiffCallBack) {
+class NoteAdapter(private val onClickListener: OnClickListener): ListAdapter<Note,NoteAdapter.ViewHolder>(DiffCallBack) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = NoteListItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
@@ -22,20 +23,29 @@ class NoteAdapter: ListAdapter<Note,NoteAdapter.ViewHolder>(DiffCallBack) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val note = getItem(position)
-        holder.binding(note)
+        holder.binding(note, onClickListener)
     }
 
 
     class ViewHolder(private val binding:NoteListItemBinding):RecyclerView.ViewHolder(binding.root){
 
-        fun binding(note:Note){
+        fun binding(
+            note:Note,
+        onClickListener: OnClickListener){
+
+            binding.noteLayout.setOnClickListener {
+                onClickListener.onNoteClick(note)
+            }
 
             binding.txtTitle.text = note.title
             binding.txtContent.text = note.content
 
-            val uri: Uri = Uri.parse(note.imageUri)
-            Glide.with(itemView.context).load(uri)
-                .into(binding.imvThumbnail)
+            if (note.imageUri.isNotEmpty()){
+                binding.imvThumbnail.visibility = View.VISIBLE
+                val uri: Uri = Uri.parse(note.imageUri)
+                Glide.with(itemView.context).load(uri)
+                    .into(binding.imvThumbnail)
+            }
 
             when (note.tag){
                 Tag.WORK -> {
@@ -66,4 +76,8 @@ class NoteAdapter: ListAdapter<Note,NoteAdapter.ViewHolder>(DiffCallBack) {
         }
 
     }
+}
+
+interface OnClickListener {
+    fun onNoteClick(note:Note)
 }

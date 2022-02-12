@@ -1,16 +1,17 @@
 package com.example.sistacafenote.database
 
+import androidx.lifecycle.LiveData
 import com.example.sistacafenote.model.Note
 import com.example.sistacafenote.util.Tag
 import kotlinx.coroutines.flow.Flow
 
 class Repository(private val noteDao: NoteDao) {
 
-    val allNoteItem: Flow<List<Note>> = noteDao.getAllNote()
+    val allNote = noteDao.getAllNote()
+    val noteOtherTag = noteDao.getNoteByTAG(Tag.OTHER)
+    val noteImportantTag = noteDao.getNoteByTAG(Tag.IMPORTANT)
+    val noteWorkTag = noteDao.getNoteByTAG(Tag.WORK)
 
-    fun getNoteByTag(tag:Tag):Flow<List<Note>>{
-        return noteDao.getNoteByTAG(tag)
-    }
 
     suspend fun insertNote(note:Note){
         noteDao.insertNote(note)

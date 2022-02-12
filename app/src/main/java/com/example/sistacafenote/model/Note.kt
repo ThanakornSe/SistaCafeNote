@@ -9,10 +9,10 @@ import kotlinx.android.parcel.Parcelize
 @Entity(tableName = "note_table")
 @Parcelize
 data class Note(
-    val title:String,
-    val content:String,
-    val tag: Tag = Tag.OTHER,
-    val imageUri:String = ""
+    var title:String,
+    var content:String,
+    var tag: Tag = Tag.OTHER,
+    var imageUri:String = ""
 ):Parcelable {
     @PrimaryKey(autoGenerate = true)
     var id:Long = 0L

@@ -12,20 +12,25 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.sistacafenote.NoteApplication
 import com.example.sistacafenote.R
 import com.example.sistacafenote.adapter.NoteAdapter
+import com.example.sistacafenote.adapter.OnClickListener
 import com.example.sistacafenote.databinding.FragmentHomeBinding
+import com.example.sistacafenote.model.Note
+import com.example.sistacafenote.util.Tag
+import com.google.android.material.snackbar.Snackbar
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(),OnClickListener {
 
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var adapter:NoteAdapter
+    private lateinit var adapter: NoteAdapter
 
-    private val viewModel:NoteViewModel by viewModels {
-        val application = requireNotNull(this.activity).application
-        NoteViewModelFactory((application as NoteApplication).repository)
+    private val viewModel: NoteViewModel by activityViewModels {
+        NoteViewModelFactory(NoteApplication.instance.repository)
     }
 
     override fun onCreateView(
@@ -33,7 +38,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_home, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
 
         binding.chipWork.setOnClickListener {
             it.isSelected = it.isSelected == false
@@ -53,23 +58,61 @@ class HomeFragment : Fragment() {
             binding.chipImportant.isSelected = false
         }
 
-        adapter = NoteAdapter()
+        adapter = NoteAdapter(this)
 
-        viewModel.allNote.observe(viewLifecycleOwner, Observer {
+        viewModel.allNote.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.submitList(it)
             }
-        })
+        }
 
         binding.rvNoteList.adapter = adapter
 
         binding.fabNewNote.setOnClickListener {
-            this.findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToNewNoteFragment())
+            this.findNavController()
+                .navigate(HomeFragmentDirections.actionHomeFragmentToNewNoteFragment())
+            viewModel.setEdit(false)
+        }
+
+        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return true
+            }
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val note = adapter.currentList[position]
+                viewModel.deleteNote(note)
+
+                //Undo
+                Snackbar.make(binding.rvNoteList,"SuccessFully deleted articled",Snackbar.LENGTH_SHORT).apply {
+                    setAction("Undo"){
+                        viewModel.insertNote(note)
+                    }
+                    show()
+                }
+            }
+        }
+
+        ItemTouchHelper(itemTouchHelperCallback).apply {
+            attachToRecyclerView(binding.rvNoteList)
         }
 
         return binding.root
     }
 
+    override fun onNoteClick(note: Note) {
+        this.findNavController().navigate(
+            HomeFragmentDirections.actionHomeFragmentToEditNoteFragment(note)
+        )
+
+    }
 
 
 }
