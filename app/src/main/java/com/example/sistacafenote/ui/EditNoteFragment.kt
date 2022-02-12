@@ -2,6 +2,7 @@ package com.example.sistacafenote.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -33,7 +34,7 @@ class EditNoteFragment : Fragment() {
     private var imageUri: String? = null
     private lateinit var note: Note
 
-    private var tagEdit:Tag? = null
+    private var tagEdit: Tag? = null
 
     private val selectedImage =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -48,7 +49,7 @@ class EditNoteFragment : Fragment() {
         binding.apply {
             edtTitle.setText(note.title)
             edtContent.setText(note.content)
-            when (note.tag){
+            when (note.tag) {
                 Tag.OTHER -> viewModel.setTagOther(true)
                 Tag.IMPORTANT -> viewModel.setTagImportant(true)
                 Tag.WORK -> viewModel.setTagWork(true)
@@ -84,47 +85,47 @@ class EditNoteFragment : Fragment() {
 
         binding.chipWork.setOnClickListener {
             it.isSelected = it.isSelected == false
-            if (it.isSelected){
+            if (it.isSelected) {
                 viewModel.setTagWork(true)
-            }else viewModel.setTagWork(false)
+            } else viewModel.setTagWork(false)
         }
-        viewModel.tagWork.observe(viewLifecycleOwner){
-            if (it){
+        viewModel.tagWork.observe(viewLifecycleOwner) {
+            if (it) {
                 binding.chipOther.isSelected = false
                 binding.chipWork.isSelected = true
                 binding.chipImportant.isSelected = false
                 tagEdit = Tag.WORK
-            }else tagEdit = null
+            } else tagEdit = null
         }
 
         binding.chipImportant.setOnClickListener {
             it.isSelected = it.isSelected == false
-            if (it.isSelected){
+            if (it.isSelected) {
                 viewModel.setTagImportant(true)
-            }else viewModel.setTagImportant(false)
+            } else viewModel.setTagImportant(false)
         }
-        viewModel.tagImportant.observe(viewLifecycleOwner){
-            if (it){
+        viewModel.tagImportant.observe(viewLifecycleOwner) {
+            if (it) {
                 binding.chipOther.isSelected = false
                 binding.chipWork.isSelected = false
                 binding.chipImportant.isSelected = true
                 tagEdit = Tag.IMPORTANT
-            }else tagEdit = null
+            } else tagEdit = null
         }
 
         binding.chipOther.setOnClickListener {
             it.isSelected = it.isSelected == false
-            if (it.isSelected){
+            if (it.isSelected) {
                 viewModel.setTagOther(true)
-            }else viewModel.setTagOther(false)
+            } else viewModel.setTagOther(false)
         }
-        viewModel.tagOther.observe(viewLifecycleOwner){
-            if (it){
+        viewModel.tagOther.observe(viewLifecycleOwner) {
+            if (it) {
                 binding.chipOther.isSelected = true
                 binding.chipWork.isSelected = false
                 binding.chipImportant.isSelected = false
                 tagEdit = Tag.OTHER
-            }else tagEdit = null
+            } else tagEdit = null
         }
 
         binding.btnDeleteImage.setOnClickListener {
@@ -158,10 +159,24 @@ class EditNoteFragment : Fragment() {
                     note.content = content
                     note.imageUri = image
                     note.tag = tagEdit ?: Tag.OTHER
-                    viewModel.updateNote(note)
+                    AlertDialog.Builder(context)
+                        .setTitle("Make sure to edit this note?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes") { dialogInterface, _ ->
+                            viewModel.updateNote(note)
+                            dialogInterface.dismiss()
+                            this.findNavController()
+                                .navigate(EditNoteFragmentDirections.actionEditNoteFragmentToHomeFragment())
+                        }
+                        .setNegativeButton("No") { dialogInterface, _ ->
+                            dialogInterface.dismiss()
+                            this.findNavController()
+                                .navigate(EditNoteFragmentDirections.actionEditNoteFragmentToHomeFragment())
+                        }
+                        .show()
+
                 }
-                this.findNavController()
-                    .navigate(EditNoteFragmentDirections.actionEditNoteFragmentToHomeFragment())
+
             }
 
             R.id.uploadImage -> {

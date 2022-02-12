@@ -27,6 +27,9 @@
             app:destination="@id/homeFragment"
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="tag"
+            app:argType="com.example.sistacafenote.util.Tag" />
     </fragment>
     <fragment
         android:id="@+id/editNoteFragment"

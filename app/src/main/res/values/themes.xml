@@ -12,11 +12,11 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="floatingActionButtonStyle">@style/FloatingActionButtonStyle</item>
 
         <item name="actionOverflowMenuStyle">@style/OverflowMenu</item>
     </style>
 
+    <!-- make option menu drop down below action bar -->
     <style name="OverflowMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
         <item name="android:windowDisablePreview">true</item>
         <item name="overlapAnchor">false</item>

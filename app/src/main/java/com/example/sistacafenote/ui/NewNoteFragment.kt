@@ -5,7 +5,6 @@ import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.*
@@ -63,6 +62,12 @@ class NewNoteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_new_note, container, false)
+
+        when (NewNoteFragmentArgs.fromBundle(requireArguments()).tag){
+            Tag.WORK -> viewModel.setTagWork(true)
+            Tag.IMPORTANT -> viewModel.setTagImportant(true)
+            Tag.OTHER -> viewModel.setTagOther(true)
+        }
 
         binding.chipWork.setOnClickListener {
             it.isSelected = it.isSelected == false
@@ -135,9 +140,17 @@ class NewNoteFragment : Fragment() {
                 val image = imageUri ?: ""
                 val tag = tagEdit ?: Tag.OTHER
                 if (title.isNotEmpty() && content.isNotEmpty()) {
-                    viewModel.insertNote(Note(title, content, tag, imageUri = image))
-                    this.findNavController()
-                        .navigate(NewNoteFragmentDirections.actionNewNoteFragmentToHomeFragment())
+                    AlertDialog.Builder(context)
+                        .setTitle("Make sure to save this note?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes") { dialogInterface, _ ->
+                            viewModel.insertNote(Note(title, content, tag, imageUri = image))
+                            dialogInterface.dismiss()
+                            this.findNavController()
+                                .navigate(NewNoteFragmentDirections.actionNewNoteFragmentToHomeFragment())
+                        }
+                        .setNegativeButton("No") { dialogInterface, _ -> dialogInterface.dismiss() }
+                        .show()
                 }else {
                     AlertDialog.Builder(context)
                         .setTitle("Error")
