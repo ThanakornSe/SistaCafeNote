@@ -1,24 +1,17 @@
 package com.example.sistacafenote.ui
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sistacafenote.NoteApplication
-import com.example.sistacafenote.R
 import com.example.sistacafenote.adapter.NoteAdapter
 import com.example.sistacafenote.adapter.OnClickListener
 import com.example.sistacafenote.databinding.FragmentHomeBinding
@@ -28,7 +21,7 @@ import com.google.android.material.snackbar.Snackbar
 
 class HomeFragment : Fragment(), OnClickListener {
 
-    private lateinit var binding: FragmentHomeBinding
+    private val binding: FragmentHomeBinding by lazy { FragmentHomeBinding.inflate(layoutInflater) }
     private lateinit var adapter: NoteAdapter
 
     private val viewModel: NoteViewModel by viewModels {
@@ -37,13 +30,41 @@ class HomeFragment : Fragment(), OnClickListener {
 
     private var tag: Tag = Tag.OTHER
 
+    override fun onResume() {
+        super.onResume()
+        when {
+            binding.chipWork.isSelected -> {
+                viewModel.setTagWork(true)
+            }
+            binding.chipImportant.isSelected -> {
+                viewModel.setTagImportant(true)
+            }
+            binding.chipOther.isSelected -> {
+                viewModel.setTagOther(true)
+            }
+            else -> {
+                viewModel.setTagWork(false)
+                viewModel.setTagImportant(false)
+                viewModel.setTagOther(false)
+            }
+        }
+    }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        setFragmentResultListener("key"){
+                _, bundle ->
+            when (bundle.get("tag")) {
+                Tag.OTHER -> viewModel.setTagOther(true)
+                Tag.IMPORTANT -> viewModel.setTagImportant(true)
+                Tag.WORK -> viewModel.setTagWork(true)
+            }
+        }
 
         binding.chipWork.setOnClickListener {
             it.isSelected = it.isSelected == false
@@ -95,7 +116,6 @@ class HomeFragment : Fragment(), OnClickListener {
 
         adapter = NoteAdapter(this)
 
-        getListByTag(null)
 
         binding.rvNoteList.adapter = adapter
 
@@ -113,7 +133,7 @@ class HomeFragment : Fragment(), OnClickListener {
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
             ): Boolean {
-                return true
+                return false
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -153,12 +173,4 @@ class HomeFragment : Fragment(), OnClickListener {
         )
     }
 
-    override fun onPause() {
-        super.onPause()
-        viewModel.apply {
-            setTagWork(false)
-            setTagImportant(false)
-            setTagOther(false)
-        }
-    }
 }

@@ -10,9 +10,9 @@ import android.provider.MediaStore
 import android.view.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.view.menu.MenuBuilder
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -25,7 +25,11 @@ import com.example.sistacafenote.util.Tag
 
 class EditNoteFragment : Fragment() {
 
-    private lateinit var binding: FragmentEditNoteBinding
+    private val binding: FragmentEditNoteBinding by lazy {
+        FragmentEditNoteBinding.inflate(
+            layoutInflater
+        )
+    }
 
     private val viewModel: NoteViewModel by viewModels {
         NoteViewModelFactory(NoteApplication.instance.repository)
@@ -79,7 +83,6 @@ class EditNoteFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_note, container, false)
 
         note = EditNoteFragmentArgs.fromBundle(requireArguments()).note
 
@@ -167,6 +170,7 @@ class EditNoteFragment : Fragment() {
                             dialogInterface.dismiss()
                             this.findNavController()
                                 .navigate(EditNoteFragmentDirections.actionEditNoteFragmentToHomeFragment())
+                            setFragmentResult("key", bundleOf("tag" to note.tag))
                         }
                         .setNegativeButton("No") { dialogInterface, _ ->
                             dialogInterface.dismiss()
@@ -174,9 +178,7 @@ class EditNoteFragment : Fragment() {
                                 .navigate(EditNoteFragmentDirections.actionEditNoteFragmentToHomeFragment())
                         }
                         .show()
-
                 }
-
             }
 
             R.id.uploadImage -> {
