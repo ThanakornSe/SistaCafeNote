@@ -13,14 +13,15 @@ import androidx.appcompat.view.menu.MenuBuilder
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.sistacafenote.NoteApplication
 import com.example.sistacafenote.R
 import com.example.sistacafenote.databinding.FragmentEditNoteBinding
 import com.example.sistacafenote.model.Note
+import com.example.sistacafenote.util.AppConstant.KEY_VALUE
+import com.example.sistacafenote.util.AppConstant.REQUEST_KEY
 import com.example.sistacafenote.util.Tag
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class EditNoteFragment : Fragment() {
@@ -31,13 +32,9 @@ class EditNoteFragment : Fragment() {
         )
     }
 
-    private val viewModel: NoteViewModel by viewModels {
-        NoteViewModelFactory(NoteApplication.instance.repository)
-    }
-
+    private val viewModel: NoteViewModel by viewModel()
     private var imageUri: String? = null
     private lateinit var note: Note
-
     private var tagEdit: Tag? = null
 
     private val selectedImage =
@@ -170,7 +167,7 @@ class EditNoteFragment : Fragment() {
                             dialogInterface.dismiss()
                             this.findNavController()
                                 .navigate(EditNoteFragmentDirections.actionEditNoteFragmentToHomeFragment())
-                            setFragmentResult("key", bundleOf("tag" to note.tag))
+                            setFragmentResult(REQUEST_KEY, bundleOf(KEY_VALUE to note.tag))
                         }
                         .setNegativeButton("No") { dialogInterface, _ ->
                             dialogInterface.dismiss()

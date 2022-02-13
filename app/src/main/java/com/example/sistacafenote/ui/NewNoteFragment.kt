@@ -19,7 +19,11 @@ import com.example.sistacafenote.NoteApplication
 import com.example.sistacafenote.R
 import com.example.sistacafenote.databinding.FragmentNewNoteBinding
 import com.example.sistacafenote.model.Note
+import com.example.sistacafenote.util.AppConstant.KEY_VALUE
+import com.example.sistacafenote.util.AppConstant.REQUEST_KEY
 import com.example.sistacafenote.util.Tag
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class NewNoteFragment : Fragment() {
@@ -28,9 +32,7 @@ class NewNoteFragment : Fragment() {
         FragmentNewNoteBinding.inflate( layoutInflater )
     }
 
-    private val viewModel: NoteViewModel by viewModels {
-        NoteViewModelFactory(NoteApplication.instance.repository)
-    }
+    private val viewModel: NoteViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -138,7 +140,7 @@ class NewNoteFragment : Fragment() {
                     viewModel.insertNote(Note(title, content, tag, imageUri = image))
                     this.findNavController()
                         .navigate(NewNoteFragmentDirections.actionNewNoteFragmentToHomeFragment())
-                    setFragmentResult("key", bundleOf("tag" to tag))
+                    setFragmentResult(REQUEST_KEY, bundleOf(KEY_VALUE to tag))
                 } else {
                     AlertDialog.Builder(context)
                         .setTitle("Error")
