@@ -29,16 +29,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class NewNoteFragment : Fragment() {
 
     private val binding: FragmentNewNoteBinding by lazy {
-        FragmentNewNoteBinding.inflate( layoutInflater )
+        FragmentNewNoteBinding.inflate(layoutInflater)
     }
 
     private val viewModel: NoteViewModel by viewModel()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
     private var tagEdit: Tag? = null
     private var imageUri: String? = null
 
@@ -59,7 +53,7 @@ class NewNoteFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
+        setHasOptionsMenu(true)
         when (NewNoteFragmentArgs.fromBundle(requireArguments()).tag) {
             Tag.WORK -> viewModel.setTagWork(true)
             Tag.IMPORTANT -> viewModel.setTagImportant(true)
@@ -111,7 +105,6 @@ class NewNoteFragment : Fragment() {
             } else tagEdit = null
         }
 
-
         binding.btnDeleteImage.setOnClickListener {
             imageUri = null
             binding.flImage.visibility = View.GONE
@@ -125,11 +118,9 @@ class NewNoteFragment : Fragment() {
         (menu as MenuBuilder).setOptionalIconsVisible(true)
         inflater.inflate(R.menu.new_note_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         when (item.itemId) {
             R.id.saveNote -> {
                 val title = binding.edtTitle.text.toString()
@@ -150,14 +141,12 @@ class NewNoteFragment : Fragment() {
                         .show()
                 }
             }
-
             R.id.uploadImage -> {
                 Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).also {
                     selectedImage.launch(it)
                 }
             }
         }
-
         return super.onOptionsItemSelected(item)
     }
 
