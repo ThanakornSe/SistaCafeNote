@@ -34,11 +34,9 @@ class NoteAdapter(private val onClickListener: OnClickListener) :
             note: Note,
             onClickListener: OnClickListener
         ) {
-
             binding.noteLayout.setOnClickListener {
                 onClickListener.onNoteClick(note)
             }
-
             binding.txtTitle.text = note.title
             binding.txtContent.text = note.content
 
