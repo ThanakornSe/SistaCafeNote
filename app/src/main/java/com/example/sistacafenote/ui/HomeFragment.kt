@@ -16,8 +16,6 @@ import com.example.sistacafenote.adapter.NoteAdapter
 import com.example.sistacafenote.adapter.OnClickListener
 import com.example.sistacafenote.databinding.FragmentHomeBinding
 import com.example.sistacafenote.model.Note
-import com.example.sistacafenote.util.AppConstant.KEY_VALUE
-import com.example.sistacafenote.util.AppConstant.REQUEST_KEY
 import com.example.sistacafenote.util.Tag
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.inject
@@ -28,7 +26,9 @@ class HomeFragment : Fragment(), OnClickListener {
 
     private val binding: FragmentHomeBinding by lazy { FragmentHomeBinding.inflate(layoutInflater) }
     private lateinit var adapter: NoteAdapter
+
     private val viewModel: NoteViewModel by viewModel()
+
     private var tag: Tag = Tag.OTHER
 
     override fun onCreateView(
@@ -36,9 +36,9 @@ class HomeFragment : Fragment(), OnClickListener {
         savedInstanceState: Bundle?
     ): View {
 
-        setFragmentResultListener(REQUEST_KEY){
+        setFragmentResultListener("key"){
                 _, bundle ->
-            when (bundle.get(KEY_VALUE)) {
+            when (bundle.get("tag")) {
                 Tag.OTHER -> viewModel.setTagOther(true)
                 Tag.IMPORTANT -> viewModel.setTagImportant(true)
                 Tag.WORK -> viewModel.setTagWork(true)
@@ -94,6 +94,8 @@ class HomeFragment : Fragment(), OnClickListener {
         }
 
         adapter = NoteAdapter(this)
+
+
         binding.rvNoteList.adapter = adapter
 
         binding.fabNewNote.setOnClickListener {
@@ -130,6 +132,7 @@ class HomeFragment : Fragment(), OnClickListener {
                 }
             }
         }
+
         ItemTouchHelper(itemTouchHelperCallback).apply {
             attachToRecyclerView(binding.rvNoteList)
         }
@@ -168,4 +171,5 @@ class HomeFragment : Fragment(), OnClickListener {
             HomeFragmentDirections.actionHomeFragmentToEditNoteFragment(note)
         )
     }
+
 }
