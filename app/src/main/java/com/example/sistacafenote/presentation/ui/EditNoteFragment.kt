@@ -1,4 +1,4 @@
-package com.example.sistacafenote.note.presentation.ui
+package com.example.sistacafenote.presentation.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -17,8 +17,8 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.sistacafenote.R
 import com.example.sistacafenote.databinding.FragmentEditNoteBinding
-import com.example.sistacafenote.note.domain.model.Note
-import com.example.sistacafenote.note.presentation.viewmodel.NoteViewModel
+import com.example.sistacafenote.domain.model.Note
+import com.example.sistacafenote.presentation.viewmodel.NoteViewModel
 import com.example.sistacafenote.util.Tag
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

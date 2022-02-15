@@ -1,6 +1,6 @@
 package com.example.sistacafenote.di
 
-import com.example.sistacafenote.note.data.data_source.NoteDatabase
+import com.example.sistacafenote.data.data_source.NoteDatabase
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 

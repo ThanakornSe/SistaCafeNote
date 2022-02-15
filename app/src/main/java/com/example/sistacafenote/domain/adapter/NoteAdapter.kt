@@ -1,4 +1,4 @@
-package com.example.sistacafenote.note.domain.adapter
+package com.example.sistacafenote.domain.adapter
 
 
 import android.net.Uri
@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.sistacafenote.R
 import com.example.sistacafenote.databinding.NoteListItemBinding
-import com.example.sistacafenote.note.domain.model.Note
+import com.example.sistacafenote.domain.model.Note
 import com.example.sistacafenote.util.Tag
 
 class NoteAdapter(private val onClickListener: OnClickListener) :

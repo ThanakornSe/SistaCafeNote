@@ -1,11 +1,11 @@
-package com.example.sistacafenote.note.presentation.viewmodel
+package com.example.sistacafenote.presentation.viewmodel
 
 
 import androidx.lifecycle.*
-import com.example.sistacafenote.note.data.repository.NoteRepositoryImpl
-import com.example.sistacafenote.note.domain.model.Note
-import com.example.sistacafenote.note.domain.repository.NoteRepository
-import com.example.sistacafenote.note.domain.use_case.NoteUseCase
+import com.example.sistacafenote.data.repository.NoteRepositoryImpl
+import com.example.sistacafenote.domain.model.Note
+import com.example.sistacafenote.domain.repository.NoteRepository
+import com.example.sistacafenote.domain.use_case.NoteUseCase
 import com.example.sistacafenote.util.Tag
 import kotlinx.coroutines.launch
 

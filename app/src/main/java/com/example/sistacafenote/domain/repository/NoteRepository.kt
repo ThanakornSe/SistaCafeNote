@@ -1,6 +1,6 @@
-package com.example.sistacafenote.note.domain.repository
+package com.example.sistacafenote.domain.repository
 
-import com.example.sistacafenote.note.domain.model.Note
+import com.example.sistacafenote.domain.model.Note
 import com.example.sistacafenote.util.Tag
 import kotlinx.coroutines.flow.Flow
 

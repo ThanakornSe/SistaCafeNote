@@ -5,9 +5,9 @@ import com.example.sistacafenote.di.dbModule
 import com.example.sistacafenote.di.repositoryModule
 import com.example.sistacafenote.di.useCaseModule
 import com.example.sistacafenote.di.viewModelModule
-import com.example.sistacafenote.note.data.data_source.NoteDatabase
-import com.example.sistacafenote.note.data.repository.NoteRepositoryImpl
-import com.example.sistacafenote.note.presentation.viewmodel.NoteViewModel
+import com.example.sistacafenote.data.data_source.NoteDatabase
+import com.example.sistacafenote.data.repository.NoteRepositoryImpl
+import com.example.sistacafenote.presentation.viewmodel.NoteViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin

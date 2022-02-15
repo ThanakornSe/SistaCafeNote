@@ -1,4 +1,4 @@
-package com.example.sistacafenote.note.presentation.ui
+package com.example.sistacafenote.presentation.ui
 
 import android.graphics.Canvas
 import android.graphics.Color
@@ -16,10 +16,10 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sistacafenote.R
 import com.example.sistacafenote.databinding.FragmentHomeBinding
-import com.example.sistacafenote.note.domain.adapter.NoteAdapter
-import com.example.sistacafenote.note.domain.adapter.OnClickListener
-import com.example.sistacafenote.note.domain.model.Note
-import com.example.sistacafenote.note.presentation.viewmodel.NoteViewModel
+import com.example.sistacafenote.domain.adapter.NoteAdapter
+import com.example.sistacafenote.domain.adapter.OnClickListener
+import com.example.sistacafenote.domain.model.Note
+import com.example.sistacafenote.presentation.viewmodel.NoteViewModel
 import com.example.sistacafenote.util.AppConstant.KEY_VALUE
 import com.example.sistacafenote.util.AppConstant.REQUEST_KEY
 import com.example.sistacafenote.util.Tag
@@ -105,9 +105,7 @@ class HomeFragment : Fragment(), OnClickListener {
         binding.fabNewNote.setOnClickListener {
             this.findNavController()
                 .navigate(
-                    HomeFragmentDirections.actionHomeFragmentToNewNoteFragment(
-                        tag
-                    )
+                    HomeFragmentDirections.actionHomeFragmentToNewNoteFragment(tag)
                 )
         }
 
@@ -231,9 +229,7 @@ class HomeFragment : Fragment(), OnClickListener {
 
     override fun onNoteClick(note: Note) {
         this.findNavController().navigate(
-            HomeFragmentDirections.actionHomeFragmentToEditNoteFragment(
-                note
-            )
+            HomeFragmentDirections.actionHomeFragmentToEditNoteFragment(note)
         )
     }
 }

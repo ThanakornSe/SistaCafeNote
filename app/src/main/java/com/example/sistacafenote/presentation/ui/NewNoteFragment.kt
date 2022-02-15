@@ -1,4 +1,4 @@
-package com.example.sistacafenote.note.presentation.ui
+package com.example.sistacafenote.presentation.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
@@ -16,8 +16,8 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.sistacafenote.R
 import com.example.sistacafenote.databinding.FragmentNewNoteBinding
-import com.example.sistacafenote.note.domain.model.Note
-import com.example.sistacafenote.note.presentation.viewmodel.NoteViewModel
+import com.example.sistacafenote.domain.model.Note
+import com.example.sistacafenote.presentation.viewmodel.NoteViewModel
 import com.example.sistacafenote.util.AppConstant.KEY_VALUE
 import com.example.sistacafenote.util.AppConstant.REQUEST_KEY
 import com.example.sistacafenote.util.Tag
@@ -52,7 +52,9 @@ class NewNoteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         setHasOptionsMenu(true)
-        when (NewNoteFragmentArgs.fromBundle(requireArguments()).tag) {
+        when (NewNoteFragmentArgs.fromBundle(
+            requireArguments()
+        ).tag) {
             Tag.WORK -> viewModel.setTagWork(true)
             Tag.IMPORTANT -> viewModel.setTagImportant(true)
             Tag.OTHER -> viewModel.setTagOther(true)

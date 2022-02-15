@@ -1,12 +1,12 @@
-package com.example.sistacafenote.note.data.repository
+package com.example.sistacafenote.data.repository
 
-import com.example.sistacafenote.note.domain.model.Note
-import com.example.sistacafenote.note.data.data_source.NoteDao
-import com.example.sistacafenote.note.domain.repository.NoteRepository
+import com.example.sistacafenote.domain.model.Note
+import com.example.sistacafenote.data.data_source.NoteDao
+import com.example.sistacafenote.domain.repository.NoteRepository
 import com.example.sistacafenote.util.Tag
 import kotlinx.coroutines.flow.Flow
 
-class NoteRepositoryImpl(private val noteDao: NoteDao):NoteRepository {
+class NoteRepositoryImpl(private val noteDao: NoteDao): NoteRepository {
 
     override fun allNote(): Flow<List<Note>> = noteDao.getAllNote()
 

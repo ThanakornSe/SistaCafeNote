@@ -1,6 +1,6 @@
 package com.example.sistacafenote.di
 
-import com.example.sistacafenote.note.presentation.viewmodel.NoteViewModel
+import com.example.sistacafenote.presentation.viewmodel.NoteViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

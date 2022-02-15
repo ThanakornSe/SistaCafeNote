@@ -1,11 +1,11 @@
-package com.example.sistacafenote.note.data.data_source
+package com.example.sistacafenote.data.data_source
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.sistacafenote.note.domain.model.Note
+import com.example.sistacafenote.domain.model.Note
 import com.example.sistacafenote.util.Converters
 
 @Database(entities = [Note::class], version = 1)

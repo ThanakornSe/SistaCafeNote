@@ -1,4 +1,4 @@
-package com.example.sistacafenote.note.domain.model
+package com.example.sistacafenote.domain.model
 
 import android.os.Parcelable
 import androidx.room.Entity
