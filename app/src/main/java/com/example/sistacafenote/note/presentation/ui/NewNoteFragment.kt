@@ -1,4 +1,4 @@
-package com.example.sistacafenote.ui
+package com.example.sistacafenote.note.presentation.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
@@ -12,17 +12,15 @@ import androidx.appcompat.view.menu.MenuBuilder
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.sistacafenote.NoteApplication
 import com.example.sistacafenote.R
 import com.example.sistacafenote.databinding.FragmentNewNoteBinding
-import com.example.sistacafenote.model.Note
+import com.example.sistacafenote.note.domain.model.Note
+import com.example.sistacafenote.note.presentation.viewmodel.NoteViewModel
 import com.example.sistacafenote.util.AppConstant.KEY_VALUE
 import com.example.sistacafenote.util.AppConstant.REQUEST_KEY
 import com.example.sistacafenote.util.Tag
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 

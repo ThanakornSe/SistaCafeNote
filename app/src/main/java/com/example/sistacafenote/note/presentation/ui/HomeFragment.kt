@@ -1,4 +1,4 @@
-package com.example.sistacafenote.ui
+package com.example.sistacafenote.note.presentation.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,23 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.sistacafenote.NoteApplication
-import com.example.sistacafenote.adapter.NoteAdapter
-import com.example.sistacafenote.adapter.OnClickListener
 import com.example.sistacafenote.databinding.FragmentHomeBinding
-import com.example.sistacafenote.model.Note
+import com.example.sistacafenote.note.domain.adapter.NoteAdapter
+import com.example.sistacafenote.note.domain.adapter.OnClickListener
+import com.example.sistacafenote.note.domain.model.Note
+import com.example.sistacafenote.note.presentation.viewmodel.NoteViewModel
 import com.example.sistacafenote.util.AppConstant.KEY_VALUE
 import com.example.sistacafenote.util.AppConstant.REQUEST_KEY
 import com.example.sistacafenote.util.Tag
 import com.google.android.material.snackbar.Snackbar
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.java.KoinJavaComponent.inject
 
 class HomeFragment : Fragment(), OnClickListener {
 
@@ -97,7 +93,11 @@ class HomeFragment : Fragment(), OnClickListener {
 
         binding.fabNewNote.setOnClickListener {
             this.findNavController()
-                .navigate(HomeFragmentDirections.actionHomeFragmentToNewNoteFragment(tag))
+                .navigate(
+                    HomeFragmentDirections.actionHomeFragmentToNewNoteFragment(
+                        tag
+                    )
+                )
         }
 
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
@@ -164,7 +164,9 @@ class HomeFragment : Fragment(), OnClickListener {
 
     override fun onNoteClick(note: Note) {
         this.findNavController().navigate(
-            HomeFragmentDirections.actionHomeFragmentToEditNoteFragment(note)
+            HomeFragmentDirections.actionHomeFragmentToEditNoteFragment(
+                note
+            )
         )
     }
 }

@@ -1,17 +1,19 @@
-package com.example.sistacafenote.ui
+package com.example.sistacafenote.note.presentation.viewmodel
 
 
 import androidx.lifecycle.*
-import com.example.sistacafenote.database.Repository
-import com.example.sistacafenote.model.Note
+import com.example.sistacafenote.note.data.repository.NoteRepositoryImpl
+import com.example.sistacafenote.note.domain.model.Note
+import com.example.sistacafenote.note.domain.repository.NoteRepository
+import com.example.sistacafenote.note.domain.use_case.NoteUseCase
 import com.example.sistacafenote.util.Tag
 import kotlinx.coroutines.launch
 
-class NoteViewModel(private val repository: Repository) : ViewModel() {
+class NoteViewModel(private val noteUseCase: NoteUseCase) : ViewModel() {
 
     fun getNoteByTag(tag: Tag? = null): LiveData<List<Note>> = tag?.let {
-        repository.getNoteByTag(it).asLiveData()
-    } ?: run { repository.allNote.asLiveData() }
+        noteUseCase.getNoteByTag(tag).asLiveData()
+    } ?: run { noteUseCase.allNote().asLiveData() }
 
     private val _imageUri = MutableLiveData<String>()
     val imageUri: LiveData<String> get() = _imageUri
@@ -37,9 +39,8 @@ class NoteViewModel(private val repository: Repository) : ViewModel() {
         _tagWork.value = b
     }
 
-    fun insertNote(note: Note) = viewModelScope.launch { repository.insertNote(note) }
-    fun updateNote(note: Note) = viewModelScope.launch { repository.updateNote(note) }
-    fun deleteNote(note: Note) = viewModelScope.launch { repository.deleteNote(note) }
-
+    fun insertNote(note: Note) = viewModelScope.launch { noteUseCase.insertNote(note) }
+    fun updateNote(note: Note) = viewModelScope.launch { noteUseCase.updateNote(note) }
+    fun deleteNote(note: Note) = viewModelScope.launch { noteUseCase.deleteNote(note) }
 
 }

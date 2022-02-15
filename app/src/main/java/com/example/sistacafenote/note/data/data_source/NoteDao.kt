@@ -1,8 +1,8 @@
-package com.example.sistacafenote.database
+package com.example.sistacafenote.note.data.data_source
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.sistacafenote.model.Note
+import com.example.sistacafenote.note.domain.model.Note
 import com.example.sistacafenote.util.Tag
 import kotlinx.coroutines.flow.Flow
 
