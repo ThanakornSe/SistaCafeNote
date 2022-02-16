@@ -1,9 +1,14 @@
 package com.example.sistacafenote.ui
 
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -12,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sistacafenote.NoteApplication
+import com.example.sistacafenote.R
 import com.example.sistacafenote.adapter.NoteAdapter
 import com.example.sistacafenote.adapter.OnClickListener
 import com.example.sistacafenote.databinding.FragmentHomeBinding
@@ -30,11 +36,16 @@ class HomeFragment : Fragment(), OnClickListener {
     private lateinit var adapter: NoteAdapter
     private val viewModel: NoteViewModel by viewModel()
     private var tag: Tag = Tag.OTHER
+    private lateinit var deleteIcon: Drawable
+    private var swipeBackground: ColorDrawable =
+        ColorDrawable(Color.parseColor("#C11642"))
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        deleteIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete)!!
 
         setFragmentResultListener(REQUEST_KEY) { _, bundle ->
             when (bundle.get(KEY_VALUE)) {
@@ -127,6 +138,61 @@ class HomeFragment : Fragment(), OnClickListener {
                     }
                     show()
                 }
+            }
+
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                val itemView = viewHolder.itemView
+                val iconMargin = (itemView.height - deleteIcon.intrinsicHeight) / 2
+
+                if (dX > 0) {
+                    swipeBackground.setBounds(
+                        itemView.left,
+                        itemView.top,
+                        dX.toInt(),
+                        itemView.bottom
+                    )
+                    deleteIcon.setBounds(
+                        itemView.left + iconMargin,
+                        itemView.top + iconMargin,
+                        itemView.left + iconMargin + deleteIcon.intrinsicWidth,
+                        itemView.bottom - iconMargin
+                    )
+                } else {
+                    swipeBackground.setBounds(
+                        itemView.right + dX.toInt(),
+                        itemView.top,
+                        itemView.right,
+                        itemView.bottom
+                    )
+                    deleteIcon.setBounds(
+                        itemView.right - iconMargin - deleteIcon.intrinsicWidth,
+                        itemView.top + iconMargin,
+                        itemView.right - iconMargin,
+                        itemView.bottom - iconMargin
+                    )
+                }
+                swipeBackground.draw(c)
+                c.save()
+
+                if (dX > 0) {
+                    c.clipRect(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
+                } else {
+                    c.clipRect(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+                }
+
+                deleteIcon.draw(c)
+                c.restore()
+                super.onChildDraw(
+                    c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive
+                )
             }
         }
         ItemTouchHelper(itemTouchHelperCallback).apply {
