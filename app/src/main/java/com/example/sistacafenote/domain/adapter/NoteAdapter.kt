@@ -45,6 +45,8 @@ class NoteAdapter(private val onClickListener: OnClickListener) :
                 val uri: Uri = Uri.parse(note.imageUri)
                 Glide.with(itemView.context).load(uri)
                     .into(binding.imvThumbnail)
+            }else {
+                binding.imvThumbnail.visibility = View.GONE
             }
 
             when (note.tag) {
@@ -69,11 +71,12 @@ class NoteAdapter(private val onClickListener: OnClickListener) :
 
     companion object DiffCallBack : DiffUtil.ItemCallback<Note>() {
         override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
-            return oldItem.content == newItem.content
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean {
-            return oldItem == newItem
+            return oldItem.title == newItem.title && oldItem.imageUri == newItem.imageUri &&
+                    oldItem.content == newItem.content && oldItem.tag == newItem.tag
         }
     }
 }

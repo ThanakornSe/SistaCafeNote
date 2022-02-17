@@ -45,58 +45,56 @@ class HomeFragment : Fragment(), OnClickListener {
 
         setFragmentResultListener(REQUEST_KEY) { _, bundle ->
             when (bundle.get(KEY_VALUE)) {
-                Tag.OTHER -> viewModel.setTagOther(true)
-                Tag.IMPORTANT -> viewModel.setTagImportant(true)
-                Tag.WORK -> viewModel.setTagWork(true)
+                Tag.OTHER -> binding.chipOther.isChecked = true
+                Tag.IMPORTANT -> binding.chipImportant.isChecked = true
+                Tag.WORK -> binding.chipWork.isChecked = true
             }
         }
 
-        binding.chipWork.setOnClickListener {
-            it.isSelected = it.isSelected == false
-            if (it.isSelected) {
-                viewModel.setTagWork(true)
-            } else viewModel.setTagWork(false)
+        binding.chipFilter.setOnCheckedChangeListener { _, _ ->
+            when {
+                binding.chipWork.isChecked -> {
+                    viewModel.setTagWork(true)
+                }
+                binding.chipImportant.isChecked -> {
+                    viewModel.setTagImportant(true)
+                }
+                binding.chipOther.isChecked -> {
+                    viewModel.setTagOther(true)
+                }
+                else -> {
+                    viewModel.setTagWork(false)
+                    viewModel.setTagImportant(false)
+                    viewModel.setTagOther(false)
+                }
+            }
         }
+
         viewModel.tagWork.observe(viewLifecycleOwner) {
             if (it) {
-                binding.chipOther.isSelected = false
-                binding.chipWork.isSelected = true
-                binding.chipImportant.isSelected = false
                 getListByTag(Tag.WORK)
                 tag = Tag.WORK
-            } else getListByTag(null)
+            } else {
+                getListByTag(null)
+            }
         }
 
-        binding.chipImportant.setOnClickListener {
-            it.isSelected = it.isSelected == false
-            if (it.isSelected) {
-                viewModel.setTagImportant(true)
-            } else viewModel.setTagImportant(false)
-        }
         viewModel.tagImportant.observe(viewLifecycleOwner) {
             if (it) {
-                binding.chipOther.isSelected = false
-                binding.chipWork.isSelected = false
-                binding.chipImportant.isSelected = true
                 getListByTag(Tag.IMPORTANT)
                 tag = Tag.IMPORTANT
-            } else getListByTag(null)
+            } else {
+                getListByTag(null)
+            }
         }
 
-        binding.chipOther.setOnClickListener {
-            it.isSelected = it.isSelected == false
-            if (it.isSelected) {
-                viewModel.setTagOther(true)
-            } else viewModel.setTagOther(false)
-        }
         viewModel.tagOther.observe(viewLifecycleOwner) {
             if (it) {
-                binding.chipOther.isSelected = true
-                binding.chipWork.isSelected = false
-                binding.chipImportant.isSelected = false
                 getListByTag(Tag.OTHER)
                 tag = Tag.OTHER
-            } else getListByTag(null)
+            } else {
+                getListByTag(null)
+            }
         }
 
         adapter = NoteAdapter(this)
@@ -204,13 +202,13 @@ class HomeFragment : Fragment(), OnClickListener {
     override fun onResume() {
         super.onResume()
         when {
-            binding.chipWork.isSelected -> {
+            binding.chipWork.isChecked -> {
                 viewModel.setTagWork(true)
             }
-            binding.chipImportant.isSelected -> {
+            binding.chipImportant.isChecked -> {
                 viewModel.setTagImportant(true)
             }
-            binding.chipOther.isSelected -> {
+            binding.chipOther.isChecked -> {
                 viewModel.setTagOther(true)
             }
             else -> {
