@@ -86,49 +86,53 @@ class EditNoteFragment : Fragment() {
 
         note = EditNoteFragmentArgs.fromBundle(requireArguments()).note
 
-        binding.chipWork.setOnClickListener {
-            it.isSelected = it.isSelected == false
-            if (it.isSelected) {
-                viewModel.setTagWork(true)
-            } else viewModel.setTagWork(false)
+        binding.chipFilter.setOnCheckedChangeListener { _, _ ->
+            when {
+                binding.chipWork.isChecked -> {
+                    viewModel.setTagWork(true)
+                }
+                binding.chipImportant.isChecked -> {
+                    viewModel.setTagImportant(true)
+                }
+                binding.chipOther.isChecked -> {
+                    viewModel.setTagOther(true)
+                }
+                else -> {
+                    viewModel.setTagWork(false)
+                    viewModel.setTagImportant(false)
+                    viewModel.setTagOther(false)
+                }
+            }
         }
+
         viewModel.tagWork.observe(viewLifecycleOwner) {
             if (it) {
-                binding.chipOther.isSelected = false
-                binding.chipWork.isSelected = true
-                binding.chipImportant.isSelected = false
+                binding.chipWork.isChecked = true
                 tagEdit = Tag.WORK
-            } else tagEdit = null
+            } else {
+                binding.chipWork.isChecked = false
+                tagEdit = null
+            }
         }
 
-        binding.chipImportant.setOnClickListener {
-            it.isSelected = it.isSelected == false
-            if (it.isSelected) {
-                viewModel.setTagImportant(true)
-            } else viewModel.setTagImportant(false)
-        }
         viewModel.tagImportant.observe(viewLifecycleOwner) {
             if (it) {
-                binding.chipOther.isSelected = false
-                binding.chipWork.isSelected = false
-                binding.chipImportant.isSelected = true
+                binding.chipImportant.isChecked = true
                 tagEdit = Tag.IMPORTANT
-            } else tagEdit = null
+            } else {
+                binding.chipImportant.isChecked = false
+                tagEdit = null
+            }
         }
 
-        binding.chipOther.setOnClickListener {
-            it.isSelected = it.isSelected == false
-            if (it.isSelected) {
-                viewModel.setTagOther(true)
-            } else viewModel.setTagOther(false)
-        }
         viewModel.tagOther.observe(viewLifecycleOwner) {
             if (it) {
-                binding.chipOther.isSelected = true
-                binding.chipWork.isSelected = false
-                binding.chipImportant.isSelected = false
+                binding.chipOther.isChecked = true
                 tagEdit = Tag.OTHER
-            } else tagEdit = null
+            } else {
+                binding.chipOther.isChecked = false
+                tagEdit = null
+            }
         }
 
         binding.btnDeleteImage.setOnClickListener {
