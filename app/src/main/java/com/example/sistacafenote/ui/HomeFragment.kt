@@ -178,7 +178,6 @@ class HomeFragment : Fragment(), OnClickListener {
                     )
                 }
                 swipeBackground.draw(c)
-                c.save()
 
                 if (dX > 0) {
                     c.clipRect(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
@@ -192,7 +191,6 @@ class HomeFragment : Fragment(), OnClickListener {
                 }
 
                 deleteIcon.draw(c)
-                c.restore()
                 super.onChildDraw(
                     c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive
                 )
