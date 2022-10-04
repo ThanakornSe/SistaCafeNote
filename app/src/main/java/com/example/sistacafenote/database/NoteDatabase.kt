@@ -12,24 +12,24 @@ import com.example.sistacafenote.util.Converters
 @TypeConverters(Converters::class)
 abstract class NoteDatabase : RoomDatabase() {
 
-    abstract val noteDao: NoteDao
+    abstract fun noteDao(): NoteDao
 
-    companion object {
-        @Volatile
-        private var INSTANCE: NoteDatabase? = null
-
-        fun getDatabase(context: Context): NoteDatabase {
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    NoteDatabase::class.java,
-                    "note_database.db"
-                ).fallbackToDestructiveMigration()
-                    .build()
-                INSTANCE = instance
-                instance
-            }
-        }
-    }
+//    companion object {
+//        @Volatile
+//        private var INSTANCE: NoteDatabase? = null
+//
+//        fun getDatabase(context: Context): NoteDatabase {
+//            return INSTANCE ?: synchronized(this) {
+//                val instance = Room.databaseBuilder(
+//                    context.applicationContext,
+//                    NoteDatabase::class.java,
+//                    "note_database.db"
+//                ).fallbackToDestructiveMigration()
+//                    .build()
+//                INSTANCE = instance
+//                instance
+//            }
+//        }
+//    }
 
 }
