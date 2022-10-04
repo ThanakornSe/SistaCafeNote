@@ -75,9 +75,9 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
     // Koin Core features
-    implementation "io.insert-koin:koin-core:3.1.5"
+    implementation "io.insert-koin:koin-core:3.1.6"
     // Koin Test features
-    testImplementation "io.insert-koin:koin-test:3.1.5"
+    testImplementation "io.insert-koin:koin-test:3.1.6"
     // Koin main features for Android
     implementation "io.insert-koin:koin-android:3.1.6"
 
