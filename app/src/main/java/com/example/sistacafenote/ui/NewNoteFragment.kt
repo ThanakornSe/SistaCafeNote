@@ -6,7 +6,9 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.*
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.core.os.bundleOf
@@ -24,6 +26,7 @@ import com.example.sistacafenote.util.AppConstant.REQUEST_KEY
 import com.example.sistacafenote.util.Tag
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.math.log
 
 
 class NewNoteFragment : Fragment() {
@@ -36,18 +39,34 @@ class NewNoteFragment : Fragment() {
     private var tagEdit: Tag? = null
     private var imageUri: String? = null
 
-    private val selectedImage =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK && result.data != null) {
-                imageUri = result.data?.data.toString()
-                if (imageUri != null && imageUri?.isNotEmpty() == true) {
-                    binding.flImage.visibility = View.VISIBLE
-                    Glide.with(requireContext()).load(result.data?.data)
-                        .into(binding.imvPhoto)
-                }
+//    private val selectedImage =
+//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+//            if (result.resultCode == RESULT_OK && result.data != null) {
+//                imageUri = result.data?.data.toString()
+//                if (imageUri != null && imageUri?.isNotEmpty() == true) {
+//                    binding.flImage.visibility = View.VISIBLE
+//                    Glide.with(requireContext()).load(result.data?.data)
+//                        .into(binding.imvPhoto)
+//                }
+//            }
+//        }
+
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        uri?.let {
+            imageUri = it.toString()
+            if (imageUri != null && imageUri?.isNotEmpty() == true) {
+                binding.flImage.visibility = View.VISIBLE
+                Glide.with(requireContext()).load(imageUri).into(binding.imvPhoto)
             }
         }
-
+    }
+//    private val pickMultipleMedia = registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(5)) { uris ->
+//        if (uris.isNotEmpty()) {
+//            Log.d("PhotoPicker", "Number of items selected: ${uris.size}")
+//        } else {
+//            Log.d("PhotoPicker", "No media selected")
+//        }
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -148,7 +167,12 @@ class NewNoteFragment : Fragment() {
             }
             R.id.uploadImage -> {
                 Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).also {
-                    selectedImage.launch(it)
+                    pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+//                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo)
+//                    val mimeType = "image/gif"
+//                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.SingleMimeType(mimeType))
+                    //selectedImage.launch(it)
+//                    pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                 }
             }
         }

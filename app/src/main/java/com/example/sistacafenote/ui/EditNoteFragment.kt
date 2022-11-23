@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.*
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.core.os.bundleOf
@@ -40,13 +41,15 @@ class EditNoteFragment : Fragment() {
 
     private var tagEdit: Tag? = null
 
-    private val selectedImage =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK && result.data != null) {
-                imageUri = result.data?.data.toString()
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        uri?.let {
+            imageUri = it.toString()
+            if (imageUri != null && imageUri?.isNotEmpty() == true) {
+                binding.flImage.visibility = View.VISIBLE
+                Glide.with(requireContext()).load(imageUri).into(binding.imvPhoto)
             }
         }
-
+    }
 
     override fun onResume() {
         super.onResume()
@@ -187,7 +190,7 @@ class EditNoteFragment : Fragment() {
 
             R.id.uploadImage -> {
                 Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).also {
-                    selectedImage.launch(it)
+                    pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                 }
             }
         }
